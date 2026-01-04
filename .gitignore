@@ -1,0 +1,20 @@
+# Build artifacts
+build/
+*.app
+
+# Xcode
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+DerivedData/
+
+# Swift
+*.swiftmodule
+*.swiftdoc
+
+# macOS
+.DS_Store
+*.pch
+
+# Debug files
+aranet4_debug.txt
