@@ -6,13 +6,14 @@ A native macOS menu bar application that displays real-time air quality readings
 
 ## Features
 
-- 📊 **Live readings** - Shows CO2 and temperature directly in the menu bar
-- 🔄 **Auto-connect** - Automatically finds and connects to your Aranet4
-- ⏰ **Auto-refresh** - Updates readings every 5 minutes
-- 🎨 **Color-coded CO2** - Visual indicators for air quality (🟢 good, 🟡 moderate, 🔴 poor)
-- 📱 **Complete data** - View CO2, temperature, humidity, pressure, and battery level
-- 🔋 **Lightweight** - Native Swift app, minimal resource usage
-- 🔒 **Privacy-focused** - All data stays on your device, no internet required
+- **Live readings** - Shows CO2 and temperature directly in the menu bar
+- **Auto-connect** - Automatically finds and connects to your Aranet4
+- **Auto-refresh** - Updates readings every 5 minutes
+- **Color-coded alerts** - Red text when CO2 reaches critical levels (≥1200 ppm)
+- **System notifications** - Get alerted when air quality degrades
+- **Complete data** - View CO2, temperature, humidity, pressure, and battery level
+- **Lightweight** - Native Swift app, minimal resource usage
+- **Privacy-focused** - All data stays on your device, no internet required
 
 ## Requirements
 
@@ -22,14 +23,24 @@ A native macOS menu bar application that displays real-time air quality readings
 
 ## Download
 
-**Option 1: Download Pre-built App** (Coming soon)
-- Download the latest release from the [Releases](../../releases) page
-- Unzip and drag to Applications folder
+### Pre-built App
 
-**Option 2: Build from Source**
-- Clone this repository
-- Run `./build.sh`
-- Copy `build/Aranet4MenuBar.app` to `/Applications/`
+[**Download Aranet4.app**](https://github.com/robjama/Aranet4MenuBar/releases/latest)
+
+1. Download the latest release from the [Releases](https://github.com/robjama/Aranet4MenuBar/releases) page
+2. Unzip the downloaded file
+3. Drag **Aranet4.app** to your Applications folder
+4. Right-click and select "Open" (first time only, to bypass Gatekeeper)
+5. Grant Bluetooth and Notification permissions when prompted
+
+### Build from Source
+
+```bash
+git clone https://github.com/robjama/Aranet4MenuBar.git
+cd Aranet4MenuBar
+./build.sh
+cp -R build/Aranet4.app /Applications/
+```
 
 ## Setup Instructions
 
