@@ -21,9 +21,16 @@ A native macOS menu bar application that displays real-time air quality readings
 - Aranet4 air quality sensor
 - Bluetooth enabled
 
-## Download
+## Installation
 
-### Pre-built App
+### Homebrew (Recommended)
+
+```bash
+brew tap robjama/aranet4 https://github.com/robjama/Aranet4MenuBar
+brew install --cask aranet4
+```
+
+### Direct Download
 
 [**Download Aranet4.app**](https://github.com/robjama/Aranet4MenuBar/releases/latest)
 
