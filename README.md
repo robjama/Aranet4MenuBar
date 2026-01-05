@@ -168,7 +168,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - [ ] Export data to CSV
 - [ ] Custom alert thresholds
 - [ ] Menu bar icon customization
-- [ ] Temperature unit preference (°C/°F)
+- [x] Temperature unit preference (°C/°F)
 
 ## Acknowledgments
 
