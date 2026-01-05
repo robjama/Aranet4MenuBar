@@ -2,8 +2,18 @@ import SwiftUI
 
 struct MenuBarView: View {
     @ObservedObject var bluetoothManager: BluetoothManager
+    @ObservedObject var settingsManager: SettingsManager
+    @State private var showingSettings = false
 
     var body: some View {
+        if showingSettings {
+            SettingsView(settingsManager: settingsManager, showingSettings: $showingSettings)
+        } else {
+            mainView
+        }
+    }
+
+    private var mainView: some View {
         VStack(alignment: .leading, spacing: 12) {
             // Header
             HStack {
@@ -11,6 +21,11 @@ struct MenuBarView: View {
                     .font(.headline)
                 Spacer()
                 ConnectionStatusView(status: bluetoothManager.connectionStatus)
+                Button(action: { showingSettings = true }) {
+                    Image(systemName: "gearshape")
+                        .foregroundColor(.secondary)
+                }
+                .buttonStyle(.plain)
             }
             .padding(.bottom, 4)
 
@@ -18,7 +33,7 @@ struct MenuBarView: View {
 
             // Readings
             if let reading = bluetoothManager.currentReading {
-                ReadingsView(reading: reading)
+                ReadingsView(reading: reading, settingsManager: settingsManager)
             } else {
                 Text("No data available")
                     .foregroundColor(.secondary)
@@ -100,6 +115,7 @@ struct MenuBarView: View {
 
 struct ReadingsView: View {
     let reading: Aranet4Reading
+    @ObservedObject var settingsManager: SettingsManager
 
     var body: some View {
         VStack(spacing: 12) {
@@ -130,7 +146,7 @@ struct ReadingsView: View {
                 ReadingCard(
                     icon: "thermometer",
                     label: "Temperature",
-                    value: String(format: "%.1f°C", reading.temperature)
+                    value: settingsManager.formatTemperature(reading.temperature)
                 )
 
                 ReadingCard(
@@ -227,5 +243,64 @@ struct ConnectionStatusView: View {
         case .connected:
             return "Connected"
         }
+    }
+}
+
+struct SettingsView: View {
+    @ObservedObject var settingsManager: SettingsManager
+    @Binding var showingSettings: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Header with back button
+            HStack {
+                Button(action: { showingSettings = false }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
+                    }
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.accentColor)
+
+                Spacer()
+
+                Text("Settings")
+                    .font(.headline)
+
+                Spacer()
+
+                // Invisible spacer to balance the back button
+                HStack(spacing: 4) {
+                    Image(systemName: "chevron.left")
+                    Text("Back")
+                }
+                .opacity(0)
+            }
+            .padding(.bottom, 4)
+
+            Divider()
+
+            // Temperature Unit Setting
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Temperature Unit")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                Picker("Temperature Unit", selection: $settingsManager.temperatureUnit) {
+                    Text("Celsius (°C)").tag(TemperatureUnit.celsius)
+                    Text("Fahrenheit (°F)").tag(TemperatureUnit.fahrenheit)
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+            }
+            .padding()
+            .background(Color.secondary.opacity(0.08))
+            .cornerRadius(8)
+
+            Spacer()
+        }
+        .padding()
+        .frame(width: 300)
     }
 }

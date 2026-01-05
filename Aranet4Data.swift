@@ -65,8 +65,10 @@ struct Aranet4Reading {
     }
 
     // Format for menu bar display
-    var menuBarText: String {
-        return "CO2: \(co2) T: \(String(format: "%.1f", temperature))°C"
+    func menuBarText(unit: TemperatureUnit) -> String {
+        let tempValue = unit == .fahrenheit ? (temperature * 9/5 + 32) : temperature
+        let unitSymbol = unit == .fahrenheit ? "F" : "C"
+        return "CO2: \(co2) T: \(String(format: "%.1f", tempValue))°\(unitSymbol)"
     }
 
     // Get CO2 level status
