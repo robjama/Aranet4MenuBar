@@ -6,10 +6,12 @@ class StatusItemController: ObservableObject {
     private var statusItem: NSStatusItem!
     private var panel: NSPanel!
     private var bluetoothManager: BluetoothManager
+    private var settingsManager: SettingsManager
     private var cancellables = Set<AnyCancellable>()
 
-    init(bluetoothManager: BluetoothManager) {
+    init(bluetoothManager: BluetoothManager, settingsManager: SettingsManager) {
         self.bluetoothManager = bluetoothManager
+        self.settingsManager = settingsManager
 
         print("Creating status item...")
 
@@ -45,7 +47,7 @@ class StatusItemController: ObservableObject {
 
         // Use native material background
         let contentView = NSHostingView(
-            rootView: MenuBarView(bluetoothManager: bluetoothManager)
+            rootView: MenuBarView(bluetoothManager: bluetoothManager, settingsManager: settingsManager)
                 .background(VisualEffectView())
         )
         panel.contentView = contentView
@@ -73,6 +75,13 @@ class StatusItemController: ObservableObject {
                 self?.updateMenuBarTitle(with: self?.bluetoothManager.currentReading, status: status)
             }
             .store(in: &cancellables)
+
+        settingsManager.$temperatureUnit
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.updateMenuBarTitle(with: self?.bluetoothManager.currentReading)
+            }
+            .store(in: &cancellables)
     }
 
     private func updateMenuBarTitle(with reading: Aranet4Reading?, status: ConnectionStatus? = nil) {
@@ -90,7 +99,7 @@ class StatusItemController: ObservableObject {
         case .connected:
             if let reading = reading {
                 // Change text color to red only when CO2 is critically high
-                let title = reading.menuBarText
+                let title = reading.menuBarText(unit: settingsManager.temperatureUnit)
                 if reading.co2 >= 1200 {
                     // High CO2 - red text
                     let attributes: [NSAttributedString.Key: Any] = [

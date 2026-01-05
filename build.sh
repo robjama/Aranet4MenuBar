@@ -30,6 +30,7 @@ swiftc \
     -framework Combine \
     Aranet4Data.swift \
     BluetoothManager.swift \
+    SettingsManager.swift \
     StatusItemController.swift \
     MenuBarView.swift \
     AppDelegate.swift \
